@@ -101,7 +101,7 @@ public class KPSwitchConflictUtil {
                          * keyboard going to show.
                          * @see KPSwitchConflictUtil#showKeyboard(View, View)
                          */
-                        v.getLocalVisibleRect(focusRect);
+                        v.getGlobalVisibleRect(focusRect);
                         if (focusRect.contains((int)event.getRawX(), (int)event.getRawY())) {
                             panelLayout.setVisibility(View.INVISIBLE);
                         }
