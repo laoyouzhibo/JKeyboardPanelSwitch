@@ -16,6 +16,7 @@
 package cn.dreamtobe.kpswitch.util;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -89,6 +90,7 @@ public class KPSwitchConflictUtil {
             });
         }
 
+        final Rect focusRect = new Rect();
         if (isHandleByPlaceholder(activity)) {
             focusView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -99,7 +101,10 @@ public class KPSwitchConflictUtil {
                          * keyboard going to show.
                          * @see KPSwitchConflictUtil#showKeyboard(View, View)
                          */
-                        panelLayout.setVisibility(View.INVISIBLE);
+                        v.getGlobalVisibleRect(focusRect);
+                        if (focusRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                            panelLayout.setVisibility(View.INVISIBLE);
+                        }
                     }
                     return false;
                 }
