@@ -170,15 +170,15 @@ public class KeyboardUtil {
 
         // get the screen height.
         final Display display = activity.getWindowManager().getDefaultDisplay();
-        final int screenHeight;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            final Point screenSize = new Point();
-            display.getSize(screenSize);
-            screenHeight = screenSize.y;
-        } else {
-            //noinspection deprecation
-            screenHeight = display.getHeight();
-        }
+//        final int screenHeight;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+//            final Point screenSize = new Point();
+//            display.getSize(screenSize);
+//            screenHeight = screenSize.y;
+//        } else {
+//            //noinspection deprecation
+//            screenHeight = display.getHeight();
+//        }
 
         ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = new KeyboardStatusListener(
                 isFullScreen,
@@ -186,8 +186,7 @@ public class KeyboardUtil {
                 isFitSystemWindows,
                 contentView,
                 target,
-                lis,
-                screenHeight);
+                lis);
 
         contentView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
         return globalLayoutListener;
@@ -230,14 +229,13 @@ public class KeyboardUtil {
         private final int statusBarHeight;
         private boolean lastKeyboardShowing;
         private final OnKeyboardShowingListener keyboardShowingListener;
-        private final int screenHeight;
 
-        private boolean isOverlayLayoutDisplayHContainStatusBar = false;
+//        private boolean isOverlayLayoutDisplayHContainStatusBar = false;
 
         KeyboardStatusListener(boolean isFullScreen, boolean isTranslucentStatus,
                                boolean isFitSystemWindows,
                                ViewGroup contentView, IPanelHeightTarget panelHeightTarget,
-                               OnKeyboardShowingListener listener, int screenHeight) {
+                               OnKeyboardShowingListener listener) {
             this.contentView = contentView;
             this.panelHeightTarget = panelHeightTarget;
             this.isFullScreen = isFullScreen;
@@ -245,7 +243,6 @@ public class KeyboardUtil {
             this.isFitSystemWindows = isFitSystemWindows;
             this.statusBarHeight = StatusBarHeightUtil.getStatusBarHeight(contentView.getContext());
             this.keyboardShowingListener = listener;
-            this.screenHeight = screenHeight;
         }
 
         @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -268,29 +265,30 @@ public class KeyboardUtil {
 
                 actionBarOverlayLayout.getWindowVisibleDisplayFrame(r);
 
-                final int overlayLayoutDisplayHeight = (r.bottom - r.top);
-
-                if (!isOverlayLayoutDisplayHContainStatusBar) {
-                    // in case of the keyboard is hiding, the display height of the
-                    // action-bar-overlay-layout would be possible equal to the screen height.
-
-                    // and if isOverlayLayoutDisplayHContainStatusBar has already been true, the
-                    // display height of action-bar-overlay-layout must include the height of the
-                    // status bar always.
-                    isOverlayLayoutDisplayHContainStatusBar =
-                            overlayLayoutDisplayHeight == screenHeight;
-                }
-
-                if (!isOverlayLayoutDisplayHContainStatusBar) {
-                    // In normal case, we need to plus the status bar height manually.
-                    displayHeight = overlayLayoutDisplayHeight + statusBarHeight;
-                } else {
-                    // In some case(such as Samsung S7 edge), the height of the
-                    // action-bar-overlay-layout display bound already included the height of the
-                    // status bar, in this case we doesn't need to plus the status bar height
-                    // manually.
-                    displayHeight = overlayLayoutDisplayHeight;
-                }
+//                final int overlayLayoutDisplayHeight = (r.bottom - r.top);
+//
+//                if (!isOverlayLayoutDisplayHContainStatusBar) {
+//                    // in case of the keyboard is hiding, the display height of the
+//                    // action-bar-overlay-layout would be possible equal to the screen height.
+//
+//                    // and if isOverlayLayoutDisplayHContainStatusBar has already been true, the
+//                    // display height of action-bar-overlay-layout must include the height of the
+//                    // status bar always.
+//                    isOverlayLayoutDisplayHContainStatusBar =
+//                            overlayLayoutDisplayHeight == screenHeight;
+//                }
+//
+//                if (!isOverlayLayoutDisplayHContainStatusBar) {
+//                    // In normal case, we need to plus the status bar height manually.
+//                    displayHeight = overlayLayoutDisplayHeight + statusBarHeight;
+//                } else {
+//                    // In some case(such as Samsung S7 edge), the height of the
+//                    // action-bar-overlay-layout display bound already included the height of the
+//                    // status bar, in this case we doesn't need to plus the status bar height
+//                    // manually.
+//                    displayHeight = overlayLayoutDisplayHeight;
+//                }
+                displayHeight = r.bottom;
 
             } else {
                 if (userRootView != null) {
